@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start1": "ts-node-dev --respawn src/app.ts",
-    "start": "node --env-file .env --watch --loader ts-node/esm --experimental-specifier-resolution=node src/app.ts",
+    "start": "node --env-file .env --watch --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,13 +14,24 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "errorhandler": "^1.5.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.14.2",
+    "split2": "^4.2.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
+    "@types/errorhandler": "^1.5.3",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.14",
+    "@types/split2": "^4.2.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
