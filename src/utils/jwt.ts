@@ -14,7 +14,7 @@
     }
 
     type VerifyTokenRsult = {
-        pass: boolean
+        success: boolean
     } & Record<string, any>
 
     export function verifyToken(token:string){
@@ -22,12 +22,12 @@
         try {
             const decordToken = jwt.verify(token, secret)
              res = {
-                pass: true,
+                success: true,
                 ...decordToken as jwt.JwtPayload
             }
         } catch (error) {
             res = {
-                pass: false,
+                success: false,
                 message: 'token error'
             }
         }

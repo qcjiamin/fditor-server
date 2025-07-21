@@ -2,7 +2,8 @@ import { Router } from "express";
 import { RowDataPacket } from "mysql2";
 import { execQuery } from "../utils/db";
 import bcrypt from 'bcrypt'
-import { generateToken } from "../utils/jwt";
+import { generateToken, verifyToken } from "../utils/jwt";
+
  const router = Router()
 
 interface User extends RowDataPacket{
@@ -15,9 +16,12 @@ interface User extends RowDataPacket{
 }
 
 router.post('/login', async (req, res, next)=>{
+    console.log(req)
     const {account, password} = {...req.body}
+    console.log(account, password)
     const sqlStr = 'select * from user where accountNumber=?'
     const result = await execQuery<User>(sqlStr, [account])
+    console.log(result)
     if(result.length !== 1) {
         res.send({
             success: false,
@@ -35,7 +39,10 @@ router.post('/login', async (req, res, next)=>{
         })
         // httpOnly 阻止前端js读取cookie
         // secure 只允许https发送请求时携带cookie
-        res.cookie('token', token, {httpOnly: true, secure: true})  
+        res.cookie('token', token, {
+            httpOnly: process.env.NODE_ENV === 'development' ? false : true, 
+            secure:process.env.NODE_ENV === 'development' ? false : true,
+        })  
         res.send({
             success: true,
             message: ''
@@ -47,6 +54,19 @@ router.post('/login', async (req, res, next)=>{
         })
     }
     
+})
+
+router.get('/vertify', (req, res, next)=>{
+    const token = req.cookies.token as string
+    console.log(token)
+    if(!token){
+        res.send({
+            success: false,
+            message: 'don\'t hava token'
+        })
+        return
+    }
+    res.send(verifyToken(token))
 })
 
 export default router

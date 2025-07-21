@@ -7,6 +7,7 @@ import path  from "path"
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { PassThrough } from "stream"
+import cookieParser from 'cookie-parser'
 
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
@@ -16,10 +17,19 @@ const __dirname = dirname(__filename);
 const app = express()
 
 // 配置跨域信息
-app.use(cors())
+app.use(cors({
+        origin: 'http://localhost:5173', // 前端域名
+        credentials: true,  // 携带证书、cookie
+        methods: 'GET, POST, PUT, DELETE, OPTIONS',
+        allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    }
+))
+
 // 配置请求体解析器
 app.use(express.json())
 app.use(express.urlencoded())
+// cookie解析器
+app.use(cookieParser())
 // 日志
 // log only 4xx and 5xx responses to console
 // 创建文件写入流
