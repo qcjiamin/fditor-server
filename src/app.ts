@@ -1,6 +1,7 @@
 import express from "express"
 import cors from 'cors'
 import userController from './controllers/user'
+import uploadController from './controllers/upload'
 import morgan from "morgan"
 import fs from 'fs'
 import path  from "path"
@@ -47,5 +48,6 @@ app.use(morgan('common', { stream: tee, skip: (req, res)=>{return res.statusCode
 // }))
 
 app.use('/user', userController)
+app.use('/upload', uploadController)
 
 export default app
