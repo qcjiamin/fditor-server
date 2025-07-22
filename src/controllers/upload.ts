@@ -1,8 +1,10 @@
-import { Router } from "express";
-import multer from 'multer'
+import { ErrorRequestHandler, Express, NextFunction, RequestHandler, Router } from "express";
+import multer, { MulterError } from 'multer'
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from 'fs'
+import { ServerResponse } from "http";
+import { errorHandler } from "./ErrorMiddleware";
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
 // 获取当前文件所在目录
@@ -20,9 +22,11 @@ const storage = multer.diskStorage({
         if(type === ''){
             cb(new TypeError('do not support file type'), '')
         }
-        const folderPath = path.join(__dirname, `upload/${type}`)
+        const folderPath = path.join(__dirname, '..', `uploads/${type}`)
+        console.log('folder path', folderPath)
         if(!fs.existsSync(folderPath)){
-            fs.mkdirSync(folderPath)
+          console.log('mkdir')
+            fs.mkdirSync(folderPath, {recursive: true})
         }
         cb(null, folderPath)
     },
@@ -44,13 +48,17 @@ const upload = multer({
     },
 })
 
-router.get('/img', upload.single('file'), (req, res, next)=>{
-  const fileAddress = `${req.protocol}://${req.get('host')}${req.originalUrl}image/${req.file!.filename}`;
+router.post('/file', upload.single('file'), (req, res, next)=>{
+  //todo 添加到数据库中
+  const type = req.file!.mimetype.split('/')[0]
+  const fileAddress = `${req.protocol}://${req.get('host')}/uploads/${type}/${req.file!.filename}`;
   res.send({
-      succcess: true,
+      success: true,
       url: fileAddress
   })
 })
+
+router.use(errorHandler);
 
 
 export default router

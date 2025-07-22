@@ -46,6 +46,7 @@ app.use(morgan('common', { stream: tee, skip: (req, res)=>{return res.statusCode
 // app.use(morgan('dev', {
 //     skip: function (req, res) { return res.statusCode < 400 }
 // }))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.use('/user', userController)
 app.use('/upload', uploadController)
