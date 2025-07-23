@@ -5,7 +5,7 @@ function isMulterError(err: any): err is MulterError {
   return err instanceof MulterError;
 }
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export const uploadErrors = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof MulterError) {
         switch (err.code) {
           case 'LIMIT_FILE_SIZE':
@@ -18,6 +18,6 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
             return res.status(400).send(`Multer 错误: ${err.message}`);
         }
     }else{
-        res.status(500).send({ errors: [{ message: err.message }] });
+        next(err)
     }
 };

@@ -17,19 +17,19 @@ interface User extends RowDataPacket{
 
 router.post('/login', async (req, res, next)=>{
     const {account, password} = {...req.body}
-    // const sqlStr = 'select * from user where accountNumber=?'
-    // const result = await execQuery<User>(sqlStr, [account])
-    // if(result.length !== 1) {
-    //     res.send({
-    //         success: false,
-    //         message: 'over 1 users has the same account'
-    //     })
-    //     return
-    // }
-    // const user = result[0]
-    // // 验证密码
-    // const re = await bcrypt.compare(password, user.password)
-    let re = true
+    const sqlStr = 'select * from user where accountNumber=?'
+    const result = await execQuery<User>(sqlStr, [account])
+    if(result.length !== 1) {
+        res.send({
+            success: false,
+            message: 'over 1 users has the same account'
+        })
+        return
+    }
+    const user = result[0]
+    // 验证密码
+    const re = await bcrypt.compare(password, user.password)
+    // let re = true
     if(re){
         const token = generateToken({
             account,

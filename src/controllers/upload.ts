@@ -4,7 +4,7 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from 'fs'
 import { ServerResponse } from "http";
-import { errorHandler } from "./ErrorMiddleware";
+import { uploadErrors } from "../errorHandler/uploadErrors";
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
 // 获取当前文件所在目录
@@ -58,7 +58,7 @@ router.post('/file', upload.single('file'), (req, res, next)=>{
   })
 })
 
-router.use(errorHandler);
+router.use(uploadErrors);
 
 
 export default router

@@ -1,6 +1,7 @@
 import express from "express"
 import cors from 'cors'
 import userController from './controllers/user'
+import projectController from './controllers/project'
 import uploadController from './controllers/upload'
 import morgan from "morgan"
 import fs from 'fs'
@@ -9,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { PassThrough } from "stream"
 import cookieParser from 'cookie-parser'
+import { otherErrors } from "./errorHandler/otherErrors"
 
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
@@ -49,6 +51,8 @@ app.use(morgan('common', { stream: tee, skip: (req, res)=>{return res.statusCode
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.use('/user', userController)
+app.use('/project', projectController)
 app.use('/upload', uploadController)
+app.use(otherErrors)
 
 export default app
