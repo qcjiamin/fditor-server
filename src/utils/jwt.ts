@@ -1,5 +1,5 @@
     import jwt from "jsonwebtoken";
-    const secret = 'kjafhkjsal'
+    export const secret = 'kjafhkjsal'
 
     export function generateToken(data: Record<string, any>){
         let created = Math.floor(Date.now() / 1000)

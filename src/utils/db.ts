@@ -5,23 +5,22 @@ const pool = mysql.createPool({
     host            : 'localhost',
     user            : 'root',
     password        : '123456',
-    database        : 'boke',
+    database        : 'fditor-db',
     port            : 3306
 })
 
-
-
+//todo: insert|upadte|delete 返回的不是指定的类型 而是 OkPacketParams，单独实现调用方法？
 /**
  * 封装通用查询语句
  * @param sql SQL 语句（带 ? 占位符）
  * @param params SQL 参数数组（可选）
  * @returns 查询结果 rows
  */
-export async function execQuery<T extends RowDataPacket = RowDataPacket>(sql: string, params: any[] = []) {
+export async function execQuery<T = any>(sql: string, params: any[] = []){
   const connection = await pool.getConnection()
   try {
-    const [rows] = await connection.query<T[]>(sql, params)
-    return rows
+    const [rows] = await connection.query(sql, params)
+    return rows as T[]
   } catch (err) {
     console.error('Query Error:', err)
     throw err // 抛出错误给调用方处理

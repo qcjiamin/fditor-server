@@ -1,10 +1,11 @@
-import { ErrorRequestHandler, Express, NextFunction, RequestHandler, Router } from "express";
-import multer, { MulterError } from 'multer'
+import {  Router, Request } from "express";
+import multer from 'multer'
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from 'fs'
-import { ServerResponse } from "http";
 import { uploadErrors } from "../errorHandler/uploadErrors";
+import { authMiddleware } from "../middleware/auth";
+import { insertNewFile } from "../utils/search";
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
 // 获取当前文件所在目录
@@ -48,8 +49,18 @@ const upload = multer({
     },
 })
 
-router.post('/file', upload.single('file'), (req, res, next)=>{
+router.post('/file', authMiddleware, upload.single('file'), async (req: Request, res, next)=>{
+  const user_id = req.userInfo!.userid
+  const fileinfo = req.file!
   //todo 添加到数据库中
+  await insertNewFile({
+    user_id,
+    file_name: fileinfo.filename,
+    file_path: fileinfo.path,
+    file_size: fileinfo.size,
+    file_type: fileinfo.mimetype
+  })
+
   const type = req.file!.mimetype.split('/')[0]
   const fileAddress = `${req.protocol}://${req.get('host')}/uploads/${type}/${req.file!.filename}`;
   res.send({
