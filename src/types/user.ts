@@ -9,4 +9,4 @@ export interface User {
   status?: number;
 }
 
-export type UserCreateNeedProperty = Omit<User, 'id' | 'created_at'> & Record<'password_salt', string>
+export type UserCreateNeedProperty = Omit<User, 'id' | 'created_at'>

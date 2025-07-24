@@ -1,3 +1,6 @@
+//----扩展模块需要显式导入----
+import './types/express'
+//--------------------------
 import express from "express"
 import cors from 'cors'
 import userController from './controllers/user'
@@ -18,7 +21,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express()
-
+// 信任代理（重要！）, 方便后续取出请求的真实IP地址
+app.set('trust proxy', true);
 // 配置跨域信息
 app.use(cors({
         origin: 'http://localhost:5173', // 前端域名

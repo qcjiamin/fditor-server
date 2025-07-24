@@ -9,6 +9,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler())
 }
 
-app.listen(PORT, ()=>{
+app.listen(PORT as number, '0.0.0.0', ()=>{
     console.log(`已启动服务器： http://localhost:${PORT}`);
 })

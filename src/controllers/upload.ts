@@ -50,7 +50,7 @@ const upload = multer({
 })
 
 router.post('/file', authMiddleware, upload.single('file'), async (req: Request, res, next)=>{
-  const user_id = req.userInfo!.userid
+  const user_id = req.userInfo!.data.id
   const fileinfo = req.file!
   //todo 添加到数据库中
   await insertNewFile({
@@ -58,7 +58,8 @@ router.post('/file', authMiddleware, upload.single('file'), async (req: Request,
     file_name: fileinfo.filename,
     file_path: fileinfo.path,
     file_size: fileinfo.size,
-    file_type: fileinfo.mimetype
+    file_type: fileinfo.mimetype,
+    upload_ip: req.ip
   })
 
   const type = req.file!.mimetype.split('/')[0]

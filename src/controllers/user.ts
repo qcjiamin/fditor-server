@@ -22,6 +22,7 @@ router.post('/login', async (req, res, next)=>{
     if(re){
         const token = generateToken({
             username,
+            id: user.id
         })
         // httpOnly 阻止前端js读取cookie
         // secure 只允许https发送请求时携带cookie
@@ -109,7 +110,6 @@ router.post(
         await createUser({
             username,
             password_hash: hashedPassword,
-            password_salt: salt,
             email
         }).catch((error)=>{
             console.log(error)

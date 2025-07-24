@@ -13,17 +13,13 @@
         return token
     }
 
-    type VerifyTokenRsult = {
-        success: boolean
-    } & Record<string, any>
-
     export function verifyToken(token:string){
-        let res:VerifyTokenRsult | null = null
+        let res
         try {
             const decordToken = jwt.verify(token, secret)
              res = {
                 success: true,
-                ...decordToken as jwt.JwtPayload
+                message: ''
             }
         } catch (error) {
             res = {

@@ -1,12 +1,13 @@
-import express from 'express'
-export interface VertifiedUserInfo{
-    userid: number
-    username: string
-}
+// import express from 'express'
+import type { TokenUserInfo } from './normal'
+
 declare module "express" {
     // Inject additional properties on express.Request
     interface Request {
         // resourceType?: string,
-        userInfo?: VertifiedUserInfo; // 验证token后将得到的用户信息挂载在req上
+        userInfo?: TokenUserInfo; // 验证token后将得到的用户信息挂载在req上
     }
 }
+
+//! 注意：如果在其他文件中使用express.Request，需要先引入express模块，否则会报错
+export {}
