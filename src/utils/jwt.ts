@@ -8,7 +8,7 @@
             ctime: created,
             // exp: created + 60 * 30,
         }, secret, {
-            expiresIn: 60
+            // expiresIn: 60
         })
         return token
     }

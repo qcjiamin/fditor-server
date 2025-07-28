@@ -3,7 +3,7 @@ import type { User, UserCreateNeedProperty } from '../types/user';
 import { OkPacketParams } from "mysql2";
 import type{ UploadFile } from "../types/file";
 import path from "path";
-import { ProjectProperty } from "src/types/project";
+import { ProjectProperty, SaveProjectProperty } from "src/types/project";
 
 export async function findUserByUsername(username:string) {
     // 执行 SQL 查询，使用占位符防止 SQL 注入
@@ -36,5 +36,18 @@ export async function insertNewFile(info: UploadFile){
 
 export async function addProject(info: ProjectProperty){
     const previewImg = info.preview_image_url ?? ''
-    await execQuery('iNSER INTO projects (user_id, project_name, project_data, preview_image_url, status) VALUES ()', [info.user_id, info.project_name, info.project_data, previewImg, info.status])
+    await execQuery('INSERT INTO projects (user_id, project_name, project_data, preview_image_url, status) VALUES (?, ?, ?, ?, ?)', [info.user_id, info.project_name, info.project_data, previewImg, info.status])
+}
+
+export async function updateProject(info: SaveProjectProperty){
+    const previewImg = info.preview_image_url ?? ''
+    await execQuery('UPDATE INTO projects (project_name, project_data, preview_image_url) VALUES (?, ?, ?)', [info.project_data, previewImg])
+}
+
+export async function getProjectById(id: number){
+    // 执行 SQL 查询，使用占位符防止 SQL 注入
+    const rows = await execQuery<ProjectProperty>('select * from projects where id=?', [id])
+    
+    // 返回查询结果（如果存在）
+    return rows.length > 0 ? rows[0] : null;
 }

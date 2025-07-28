@@ -64,8 +64,7 @@ router.post('/file', authMiddleware, upload.single('file'), async (req: Request,
 
   const type = req.file!.mimetype.split('/')[0]
   const fileAddress = `${req.protocol}://${req.get('host')}/uploads/${type}/${req.file!.filename}`;
-  res.send({
-      success: true,
+  res.status(201).send({
       url: fileAddress
   })
 })

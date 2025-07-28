@@ -8,8 +8,7 @@ export const authMiddleware = (req: Request, res:Response, next:NextFunction) =>
     // const token = authHeader && authHeader.split(' ')[1]; // 格式：Bearer token
     const token = req.cookies.token as string
     if(!token){
-        res.send({
-            success: false,
+        res.status(401).send({
             message: 'don\'t hava token'
         })
         return
@@ -21,6 +20,8 @@ export const authMiddleware = (req: Request, res:Response, next:NextFunction) =>
         req.userInfo = decordToken as TokenUserInfo
         next()
     } catch (error) {
-        res.status(401).end()
+        res.status(401).send({
+            message: 'token vertify failed'
+        })
     }
   }
