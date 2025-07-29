@@ -14,7 +14,7 @@ export const authMiddleware = (req: Request, res:Response, next:NextFunction) =>
         return
     }
     try {
-        console.log(res)
+        // console.log(res)
         const decordToken = jwt.verify(token, secret) as jwt.JwtPayload
         //! 之前一直报错；通过设置 tsconfig.typeRoots，解决在tsc编译时报错
         req.userInfo = decordToken as TokenUserInfo

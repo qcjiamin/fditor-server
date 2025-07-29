@@ -22,7 +22,7 @@ export async function findUserByEmail(email:string) {
 }
 
 export async function createUser(info:UserCreateNeedProperty){
-    await execQuery('INSERT INTO users (username, password_hash, email, created_at, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [info.username, info.password_hash, info.email])
+    await execQuery<never, OkPacketParams>('INSERT INTO users (username, password_hash, email, created_at, updated_at) VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [info.username, info.password_hash, info.email])
 }
 
 export async function insertNewFile(info: UploadFile){
@@ -36,17 +36,19 @@ export async function insertNewFile(info: UploadFile){
 
 export async function addProject(info: ProjectProperty){
     const previewImg = info.preview_image_url ?? ''
-    await execQuery('INSERT INTO projects (user_id, project_name, project_data, preview_image_url, status) VALUES (?, ?, ?, ?, ?)', [info.user_id, info.project_name, info.project_data, previewImg, info.status])
+    const res = await execQuery<never, OkPacketParams>('INSERT INTO projects (user_id, project_name, project_data, preview_image_url, status) VALUES (?, ?, ?, ?, ?)', [info.user_id, info.project_name, info.project_data, previewImg, info.status])
+    if(!res.insertId) throw new Error('insert project but donot have inserid')
+    return res.insertId
 }
 
 export async function updateProject(info: SaveProjectProperty){
     const previewImg = info.preview_image_url ?? ''
-    await execQuery('UPDATE INTO projects (project_name, project_data, preview_image_url) VALUES (?, ?, ?)', [info.project_data, previewImg])
+    await execQuery('UPDATE projects SET project_data = ?, preview_image_url = ? where id = ?', [info.project_data, previewImg, info.id])
 }
 
 export async function getProjectById(id: number){
     // 执行 SQL 查询，使用占位符防止 SQL 注入
-    const rows = await execQuery<ProjectProperty>('select * from projects where id=?', [id])
+    const rows = await execQuery<ProjectProperty>('select * from projects where id=?', [id]) as ProjectProperty[]
     
     // 返回查询结果（如果存在）
     return rows.length > 0 ? rows[0] : null;

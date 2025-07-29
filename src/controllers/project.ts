@@ -17,24 +17,27 @@ router.get('/:id', (req, res, next)=>{
 router.post('/add', authMiddleware, async (req:Request, res, next)=>{
   const user_id = req.userInfo!.data.id
   const {project_name, project_data, preview_image_url, status} = {...req.body}
-  await addProject({
+  const insertID = await addProject({
     user_id: user_id,
     project_name: project_name,
     project_data: project_data,
     preview_image_url: preview_image_url,
     status: status
   })
-  res.status(201).send()
+  res.status(201).send({
+    insertID
+  })
 })
 
 router.post('/save', authMiddleware, async (req:Request, res, next)=>{
   // const user_id = req.userInfo!.data.id
-  const {project_data, preview_image_url} = {...req.body}
+  const {id, project_data, preview_image_url} = {...req.body}
   await updateProject({
+    id,
     project_data: project_data,
     preview_image_url: preview_image_url,
   })
-  res.status(201).send()
+  res.status(201).send({})
 })
 
 router.get('/get/:id', authMiddleware, async (req: Request, res, next)=>{
