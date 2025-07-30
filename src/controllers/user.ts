@@ -3,18 +3,22 @@ import bcrypt from 'bcrypt'
 import { generateToken, verifyToken } from "../utils/jwt";
 import {check, validationResult} from 'express-validator';
 import { createUser, findUserByEmail, findUserByUsername } from "..//utils/search";
+import * as z from 'zod'
+import { validataMiddleware } from "../middleware/validata";
+import { ApiResponse } from "../types/normal";
 
 const router = Router()
 
-router.post('/login', async (req, res, next)=>{
+const LoginBodyScheme = z.object({
+    username: z.string().nonempty(),
+    password: z.string().nonempty()
+})
+type LoginBody = z.infer<typeof LoginBodyScheme>
+router.post('/login', validataMiddleware(LoginBodyScheme), async (req:Request<{}, {}, LoginBody>, res: Response<ApiResponse>)=>{
     const {username, password} = {...req.body}
     const user = await findUserByUsername(username)
     if(!user){
-        res.send({
-            success: false,
-            message: 'dot\'t have username'
-        })
-        return
+        return res.send({ message: 'dot\'t have username' })
     }
     // 验证密码
     const re = await bcrypt.compare(password, user.password_hash)
@@ -29,33 +33,43 @@ router.post('/login', async (req, res, next)=>{
         res.cookie('token', token, {
             httpOnly: process.env.NODE_ENV === 'development' ? false : true, 
             secure:process.env.NODE_ENV === 'development' ? false : true,
-            maxAge: 900000
+            maxAge: 9000000
         })  
-        res.send({
-            success: true,
-            message: ''
-        })
+        res.status(200).send({})
     }else{
-        res.send({
-            success: false,
-            message: 'password err'
-        })
+        res.status(401).send({ message: 'password err' })
     }
     
 })
 
-router.get('/vertify', (req, res, next)=>{
+router.get('/vertify', (req, res: Response<ApiResponse<{pass: boolean, message?: string}>>)=>{
     const token = req.cookies.token as string
     console.log(token)
     if(!token){
-        res.send({
-            success: false,
+        res.status(200).send({
+            pass: false,
             message: 'don\'t hava token'
         })
         return
     }
-    res.send(verifyToken(token))
+    if(verifyToken(token)){
+        res.status(200).send({
+            pass: true
+        })
+    }else{
+        res.status(200).send({
+            pass: false,
+        })
+    }
 })
+
+
+type RegisterBody = {
+    username: string,
+    password: string,
+    email: string
+}
+//! 这个接口使用express-validator, 它比zod更轻量，默认中间件使用，错误会集中到响应中
 // 用户注册接口
 router.post(
   '/register',
@@ -81,47 +95,36 @@ router.post(
       .isEmail()
       .withMessage('请输入合法的邮箱地址')
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request<{}, {}, RegisterBody>, res: Response<ApiResponse>) => {
     // 检查验证结果
     const errors = validationResult(req);
     console.log(errors)
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ message: 'valid error', details: errors.array() });
     }
 
     const { username, password, email } = req.body;
-        // 1. 检查用户名是否已存在
-        const existingUser = await findUserByUsername(username)
-
-        if (existingUser) {
-          return res.status(400).json({ error: '用户名已被注册' });
-        }
-
-        // 2. 检查邮箱是否已存在
-        const existingEmail = await findUserByEmail(email)
-        if (existingEmail) {
-          return res.status(400).json({ error: '邮箱已被注册' });
-        }
-
-        // 3. 密码加密
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        // 4. 创建新用户
-        await createUser({
-            username,
-            password_hash: hashedPassword,
-            email
-        }).catch((error)=>{
-            console.log(error)
-            return res.status(500).json({ error: 'sql error' });
-        })
-
-        // 5. 返回成功响应
-        res.status(201).json({
-            success: true,
-            message: '注册成功',
-        });
+    // 1. 检查用户名是否已存在
+    const existingUser = await findUserByUsername(username)
+    if (existingUser) {
+      return res.status(400).json({message: 'username exist'});
+    }
+    // 2. 检查邮箱是否已存在
+    const existingEmail = await findUserByEmail(email)
+    if (existingEmail) {
+      return res.status(400).json({ message: 'email exist' });
+    }
+    // 3. 密码加密
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    // 4. 创建新用户
+    await createUser({
+        username,
+        password_hash: hashedPassword,
+        email
+    })
+    // 5. 返回成功响应
+    res.status(201).json({});
   }
 );
 

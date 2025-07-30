@@ -14,19 +14,11 @@
     }
 
     export function verifyToken(token:string){
-        let res
         try {
             const decordToken = jwt.verify(token, secret)
-             res = {
-                success: true,
-                message: ''
-            }
+            return true
         } catch (error) {
-            res = {
-                success: false,
-                message: 'token error'
-            }
+            return false
         }
-        return res
 
     }

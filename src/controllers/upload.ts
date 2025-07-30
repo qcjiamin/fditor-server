@@ -1,4 +1,4 @@
-import {  Router, Request } from "express";
+import {  Router, Request, Response } from "express";
 import multer from 'multer'
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -6,6 +6,7 @@ import fs from 'fs'
 import { uploadErrors } from "../errorHandler/uploadErrors";
 import { authMiddleware } from "../middleware/auth";
 import { insertNewFile } from "../utils/search";
+import { ApiResponse } from "../types/normal";
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);
 // 获取当前文件所在目录
@@ -49,9 +50,15 @@ const upload = multer({
     },
 })
 
-router.post('/file', authMiddleware, upload.single('file'), async (req: Request, res, next)=>{
+type UploadFileRes = { url: string }
+router.post('/file', authMiddleware, upload.single('file'), async (req: Request, res: Response<ApiResponse<UploadFileRes>>)=>{
   const user_id = req.userInfo!.data.id
-  const fileinfo = req.file!
+  if(!req.file){
+    return res.status(200).json({
+      message: 'upload file but do not have file'
+    })
+  }
+  const fileinfo = req.file
   //todo 添加到数据库中
   await insertNewFile({
     user_id,
@@ -69,6 +76,7 @@ router.post('/file', authMiddleware, upload.single('file'), async (req: Request,
   })
 })
 
+// 拦截 multer 报错
 router.use(uploadErrors);
 
 

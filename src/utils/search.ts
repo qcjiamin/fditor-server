@@ -53,3 +53,6 @@ export async function getProjectById(id: number){
     // 返回查询结果（如果存在）
     return rows.length > 0 ? rows[0] : null;
 }
+export async function updateProjectNameByID(id: number, name: string){
+    await execQuery<never, OkPacketParams>('UPDATE projects SET project_name = ? where id = ?', [name, id])
+}
