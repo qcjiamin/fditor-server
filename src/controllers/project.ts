@@ -15,10 +15,9 @@ const StatusSchema = z.union([
   z.literal(4),
 ]);
 const AddProjectBodySchema = z.object({
-  user_id: z.number().gte(1),
   project_name: z.string().nonempty(),
   project_data: z.string().nonempty(), // 更严格的配置格式检测？
-  preview_image_url: z.url(),
+  // preview_image_url: z.url(),
   status: StatusSchema
 })
 type AddProjectBody = z.infer<typeof AddProjectBodySchema>
@@ -26,12 +25,12 @@ type AddProjectRes = { insertID: number }
 
 router.post('/add', authMiddleware, validataMiddleware(AddProjectBodySchema), async (req:Request<{}, {}, AddProjectBody>, res: Response<ApiResponse<AddProjectRes>>)=>{
   const user_id = req.userInfo!.data.id
-  const {project_name, project_data, preview_image_url, status} = {...req.body}
+  const {project_name, project_data, status} = {...req.body}
   const insertID = await addProject({
     user_id: user_id,
     project_name: project_name,
     project_data: project_data,
-    preview_image_url: preview_image_url,
+    // preview_image_url: preview_image_url,
     status: status
   })
   res.status(201).send({
