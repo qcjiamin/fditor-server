@@ -51,7 +51,7 @@ router.post('/save', authMiddleware, validataMiddleware(SaveProjectBodySchema), 
     project_data: project_data,
     preview_image_url: preview_image_url,
   })
-  res.status(201).send({})
+  res.status(200).send({})
 })
 
 const GetProjectBodySchema = z.object({
