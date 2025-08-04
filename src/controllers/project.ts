@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
-import { authMiddleware } from "../middleware/auth";
-import { addProject, getProjectById, updateProject, updateProjectNameByID } from "../utils/search";
+import { authMiddleware } from "../middleware/auth.js";
+import { addProject, getProjectById, updateProject, updateProjectNameByID } from "../utils/search.js";
 import * as z from 'zod'
-import { validataMiddleware } from "../middleware/validata";
-import { ApiResponse } from "../types/normal";
+import { validataMiddleware } from "../middleware/validata.js";
+import { ApiResponse } from "../types/normal.js";
 
 const router = Router()
 

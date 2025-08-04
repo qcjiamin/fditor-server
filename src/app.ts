@@ -1,11 +1,11 @@
 //----扩展模块需要显式导入----
-import './types/express'
+import './types/express.js'
 //--------------------------
 import express from "express"
 import cors from 'cors'
-import userController from './controllers/user'
-import projectController from './controllers/project'
-import uploadController from './controllers/upload'
+import userController from './controllers/user.js'
+import projectController from './controllers/project.js'
+import uploadController from './controllers/upload.js'
 import morgan from "morgan"
 import fs from 'fs'
 import path  from "path"
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { PassThrough } from "stream"
 import cookieParser from 'cookie-parser'
-import { otherErrors } from "./errorHandler/otherErrors"
+import { otherErrors } from "./errorHandler/otherErrors.js"
 
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);

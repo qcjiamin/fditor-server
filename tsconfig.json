@@ -26,9 +26,9 @@
     "moduleDetection": "force",                        /* Control what method is used to detect module-format JS files. */
 
     /* Modules */
-    "module": "esnext",                                  /* Specify what module code is generated. */
+    "module": "NodeNext",                                  /* Specify what module code is generated. */
     "rootDir": "src",                                    /* Specify the root folder within your source files. */
-    "moduleResolution": "node",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    "moduleResolution": "NodeNext",                     /* Specify how TypeScript looks up a file from a given module specifier. */
     //! 配置后，不要ts后缀来导入模块才生效，不然找不到模块
     "baseUrl": ".",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {

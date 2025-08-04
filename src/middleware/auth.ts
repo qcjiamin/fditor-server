@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { secret } from '../utils/jwt'
+import { secret } from '../utils/jwt.js'
 import jwt from "jsonwebtoken";
-import type { TokenUserInfo } from "../types/normal";
+import type { TokenUserInfo } from "../types/normal.js";
 export const authMiddleware = (req: Request, res:Response, next:NextFunction) => {
     // 从请求头中获取 Token（通常是 Bearer Token 格式）
     // const authHeader = req.headers['authorization'];

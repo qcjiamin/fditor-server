@@ -1,5 +1,5 @@
 // import express from 'express'
-import type { TokenUserInfo } from './normal'
+import type { TokenUserInfo } from './normal.js'
 
 declare module "express" {
     // Inject additional properties on express.Request

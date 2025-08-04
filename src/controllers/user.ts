@@ -1,11 +1,11 @@
 import { Router,Request, Response } from "express";
 import bcrypt from 'bcrypt'
-import { generateToken, verifyToken } from "../utils/jwt";
+import { generateToken, verifyToken } from "../utils/jwt.js";
 import {check, validationResult} from 'express-validator';
-import { createUser, findUserByEmail, findUserByUsername } from "..//utils/search";
+import { createUser, findUserByEmail, findUserByUsername } from "..//utils/search.js";
 import * as z from 'zod'
-import { validataMiddleware } from "../middleware/validata";
-import { ApiResponse } from "../types/normal";
+import { validataMiddleware } from "../middleware/validata.js";
+import { ApiResponse } from "../types/normal.js";
 
 const router = Router()
 

@@ -3,13 +3,13 @@ import multer from 'multer'
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from 'fs'
-import { uploadErrors } from "../errorHandler/uploadErrors";
-import { authMiddleware } from "../middleware/auth";
-import { insertNewFile } from "../utils/search";
-import { ApiResponse } from "../types/normal";
+import { uploadErrors } from "../errorHandler/uploadErrors.js";
+import { authMiddleware } from "../middleware/auth.js";
+import { insertNewFile } from "../utils/search.js";
+import { ApiResponse } from "../types/normal.js";
 import { randomUUID } from "crypto";
 import * as z from 'zod'
-import { validataMiddleware } from "../middleware/validata";
+import { validataMiddleware } from "../middleware/validata.js";
 
 // 获取当前文件的绝对路径
 const __filename = fileURLToPath(import.meta.url);

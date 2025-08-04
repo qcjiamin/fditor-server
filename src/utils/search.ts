@@ -1,9 +1,9 @@
-import { execQuery } from "./db";
-import type { User, UserCreateNeedProperty } from '../types/user';
+import { execQuery } from "./db.js";
+import type { User, UserCreateNeedProperty } from '../types/user.js';
 import { OkPacketParams } from "mysql2";
-import type{ UploadFile } from "../types/file";
+import type{ UploadFile } from "../types/file.js";
 import path from "path";
-import { ProjectProperty, SaveProjectProperty } from "src/types/project";
+import { ProjectProperty, SaveProjectProperty } from "../types/project.js";
 
 export async function findUserByUsername(username:string) {
     // 执行 SQL 查询，使用占位符防止 SQL 注入
