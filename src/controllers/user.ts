@@ -44,7 +44,6 @@ router.post('/login', validataMiddleware(LoginBodyScheme), async (req:Request<{}
 
 router.get('/vertify', (req, res: Response<ApiResponse<{pass: boolean, message?: string}>>)=>{
     const token = req.cookies.token as string
-    console.log(token)
     if(!token){
         res.status(200).send({
             pass: false,
@@ -98,7 +97,6 @@ router.post(
   async (req: Request<{}, {}, RegisterBody>, res: Response<ApiResponse>) => {
     // 检查验证结果
     const errors = validationResult(req);
-    console.log(errors)
     if (!errors.isEmpty()) {
       return res.status(400).json({ message: 'valid error', details: errors.array() });
     }
