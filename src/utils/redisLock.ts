@@ -11,42 +11,50 @@ const redis = new Redis({
   db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : 0,
 });
 
-export class RedisLock {
-  async acquire(lockKey:string, expireSeconds = 10, waitTimeout = 5000) {
-    const lockValue = v4();
-    const start = Date.now();
-    
-    while (Date.now() - start < waitTimeout) {
-      // 尝试获取锁
-      const result = await redis.set(
-        lockKey,
-        lockValue,
-        'PX',
-        expireSeconds,
-        'NX'
-        // expireSeconds
-      );
-      
-      if (result === 'OK') return lockValue;
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    
-    return null;
-  }
-  
-  async release(lockKey:string, lockValue:string) {
-    if (!lockValue) return false;
-    
-    const script = `
-      if redis.call('get', KEYS[1]) == ARGV[1] then
-        return redis.call('del', KEYS[1])
-      else
-        return 0
-      end
-    `;
-    
-    const result = await redis.eval(script, 1, lockKey, lockValue);
-    return result === 1;
-  }
+export async function setValue(key: string, value: string){
+  await redis.set(key, value)
 }
+export async function getValue(key: string){
+  const value = await redis.get(key)
+  return value
+}
+
+// export class RedisLock {
+//   async acquire(lockKey:string, expireSeconds = 10, waitTimeout = 5000) {
+//     const lockValue = v4();
+//     const start = Date.now();
+    
+//     while (Date.now() - start < waitTimeout) {
+//       // 尝试获取锁
+//       const result = await redis.set(
+//         lockKey,
+//         lockValue,
+//         'PX',
+//         expireSeconds,
+//         'NX'
+//         // expireSeconds
+//       );
+      
+//       if (result === 'OK') return lockValue;
+//       await new Promise(resolve => setTimeout(resolve, 100));
+//     }
+    
+//     return null;
+//   }
+  
+//   async release(lockKey:string, lockValue:string) {
+//     if (!lockValue) return false;
+    
+//     const script = `
+//       if redis.call('get', KEYS[1]) == ARGV[1] then
+//         return redis.call('del', KEYS[1])
+//       else
+//         return 0
+//       end
+//     `;
+    
+//     const result = await redis.eval(script, 1, lockKey, lockValue);
+//     return result === 1;
+//   }
+// }
 
