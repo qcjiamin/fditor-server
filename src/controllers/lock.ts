@@ -8,6 +8,9 @@ import { fileURLToPath } from "url";
 import { getValue, setValue } from "../utils/redisLock.js";
 import { Job, Queue, QueueEvents } from "bullmq";
 import {Redis} from 'ioredis'
+import { configDotenv } from 'dotenv'
+configDotenv()
+
 const LOCK_WRITE_KEY = 'write:lock'
 
 const router = Router()
@@ -39,11 +42,19 @@ router.get('/get/:key', async (req:Request, res: Response)=>{
   })
 })
 
+console.log(process.env.REDIS_HOST, process.env.REDIS_PASSWORD, process.env.REDIS_PORT)
+// const redis = new Redis({
+//   host: process.env.REDIS_HOST || 'localhost',
+//   port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+//   password: process.env.REDIS_PASSWORD,
+//   db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : 0,
+//   maxRetriesPerRequest: null
+// });
 const redis = new Redis({
-  host: process.env.REDIS_HOST || 'localhost',
-  port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
-  password: process.env.REDIS_PASSWORD,
-  db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : 0,
+  host: '172.23.84.189',
+  port:  6379,
+  password: '123456',
+  db: 0,
   maxRetriesPerRequest: null
 });
 

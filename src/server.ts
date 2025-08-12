@@ -1,5 +1,7 @@
 import app from './app.js'
 import errorHandler from 'errorhandler'
+import { configDotenv } from 'dotenv'
+configDotenv()
 
 const PORT = process.env.PORT || 3060
 

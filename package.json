@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start1": "ts-node-dev --respawn src/app.ts",
-    "start": "cross-env NODE_ENV=development node --env-file .env --watch --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
+    "start": "cross-env NODE_ENV=development node --watch --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
     "start11": "cross-env NODE_ENV=development node --env-file .env --watch --loader ts-node/esm --experimental-specifier-resolution=node src/server1.ts",
     "start22": "cross-env NODE_ENV=development node --env-file .env --watch --loader ts-node/esm --experimental-specifier-resolution=node src/server2.ts",
     "build": "tsc",

@@ -1,6 +1,8 @@
 
 import {Redis} from 'ioredis'
 import {v4} from 'uuid'
+import { configDotenv } from 'dotenv'
+configDotenv()
 
 // 从环境变量获取配置，默认本地 Redis
 const redis = new Redis({
