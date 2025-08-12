@@ -42,19 +42,11 @@ router.get('/get/:key', async (req:Request, res: Response)=>{
   })
 })
 
-console.log(process.env.REDIS_HOST, process.env.REDIS_PASSWORD, process.env.REDIS_PORT)
-// const redis = new Redis({
-//   host: process.env.REDIS_HOST || 'localhost',
-//   port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
-//   password: process.env.REDIS_PASSWORD,
-//   db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : 0,
-//   maxRetriesPerRequest: null
-// });
 const redis = new Redis({
-  host: '172.23.84.189',
-  port:  6379,
-  password: '123456',
-  db: 0,
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
+  password: process.env.REDIS_PASSWORD,
+  db: process.env.REDIS_DB ? parseInt(process.env.REDIS_DB) : 0,
   maxRetriesPerRequest: null
 });
 
