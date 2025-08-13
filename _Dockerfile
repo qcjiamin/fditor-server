@@ -1,0 +1,31 @@
+# 在Dockerfile顶部添加
+ARG BUILD_TIMESTAMP
+
+# 构建阶段
+FROM node:18-alpine AS build-stage
+# 关键：在当前阶段重新声明ARG，接收全局传递的BUILD_TIMESTAMP
+ARG BUILD_TIMESTAMP
+RUN node -v && npm -v
+WORKDIR /app
+
+# 1. 复制根目录依赖配置
+COPY package.json package-lock.json ./
+
+# 2. 安装所有依赖（包括workspaces中的本地包）
+RUN npm ci
+
+# 3. 复制所有项目代码（此时依赖已安装，避免重复安装）
+COPY . .
+
+# 4. 单独构建fditor-ui（指定工作目录）
+RUN npm run build && echo "Built at: $BUILD_TIMESTAMP" >> ./dist/build-info.txt  # 执行fditor-ui的build脚本
+
+# 生产阶段
+FROM node:18-alpine AS production-stage
+# 复制生产依赖和构建产物
+COPY package.json package-lock.json ./
+COPY --from=build-stage /app/dist ./dist
+COPY ecosystem.config.js ./  # 复制 PM2 配置文件
+
+EXPOSE 3000
+CMD ["npm", "pm", "start"]
