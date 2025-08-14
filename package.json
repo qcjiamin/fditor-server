@@ -16,7 +16,7 @@
     "pmlogs": "pm2 logs",
     "pmclear": "pm2 stop ecosystem.config.cjs && pm2 delete all",
     "deploy": "node build.js",
-    "pm-docker-start": "pm2-runtime ecosystem.config.js"
+    "pm-docker-start": "pm2-runtime ecosystem.config.cjs"
   },
   "keywords": [],
   "author": "",
