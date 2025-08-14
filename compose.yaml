@@ -7,8 +7,10 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
+# 创建出的容器名 [当前目录名]_[服务名]_[序号]， 可自定义
 services:
   fditor-server:
+    # container_name: xxx
     build:
       context: .
     # env_file:
