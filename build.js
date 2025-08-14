@@ -65,60 +65,6 @@ const incrementVersion = () => {
   return newVersion
 }
 
-// 检查Docker Hub认证状态
-const checkDockerLogin = () => {
-  try {
-    // 检查是否已登录Docker Hub
-    execSync('docker info --format "{{.RegistryConfig.IndexConfigs.docker.io.Name}}"', { stdio: 'pipe' })
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
-// Docker Hub登录
-const dockerLogin = (username, password) => {
-  if (!username || !password) {
-    log('Docker Hub用户名或密码未提供', 'error')
-    process.exit(1)
-  }
-
-  try {
-    log('登录Docker Hub...')
-    // 使用环境变量传递敏感信息，避免命令行历史泄露
-    execSync(`echo "${password}" | docker login -u ${username} --password-stdin`, { stdio: 'inherit' })
-    log('Docker Hub登录成功')
-  } catch (error) {
-    log('Docker Hub登录失败', 'error')
-    process.exit(1)
-  }
-}
-
-// 推送镜像到Docker Hub
-const pushToDockerHub = (imageTag, dockerHubUsername, imageName) => {
-  const fullImageTag = `${dockerHubUsername}/${imageTag}`
-
-  try {
-    // 为镜像添加Docker Hub仓库标签
-    //! tag 是为了让本地镜像名与远程镜像名相同，这样才能正常推送；如果本身名字相同，直接push name:tag 会隐含tag命令
-    runCommand(`docker tag ${imageTag} ${fullImageTag}`)
-
-    // 推送镜像
-    log(`推送镜像到Docker Hub: ${fullImageTag}`)
-    runCommand(`docker push ${fullImageTag}`)
-
-    // 推送latest标签
-    const latestTag = `${dockerHubUsername}/${imageName}:latest`
-    runCommand(`docker tag ${imageTag} ${latestTag}`)
-    runCommand(`docker push ${latestTag}`)
-
-    log('镜像推送成功', 'success')
-  } catch (error) {
-    log('镜像推送失败', 'error')
-    process.exit(1)
-  }
-}
-
 // 检查Git工作区是否干净
 const checkGitClean = () => {
   try {
@@ -210,11 +156,10 @@ const runRemoteCommand = (host, port, user, authMethod, command) => {
   }
 }
 // 远程部署主函数
-const remoteDeploy = (newVersion, dockerHubUsername, imageName) => {
+const remoteDeploy = () => {
   const host = process.env.REMOTE_HOST
   const port = process.env.REMOTE_PORT || 22
   const user = process.env.REMOTE_USER
-  const imageTag = `${dockerHubUsername}/${imageName}:${newVersion}`
 
   // 确定认证方式
   const authMethod = process.env.REMOTE_SSH_KEY
@@ -301,7 +246,7 @@ const main = () => {
         // 8. 远程部署
         if (process.env.REMOTE_HOST) {
           checkRemoteEnv()
-          remoteDeploy(newVersion, dockerHubUsername, imageName)
+          remoteDeploy()
         } else {
           log('未提供远程服务器信息，跳过自动部署', 'warn')
         }
