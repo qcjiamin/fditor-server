@@ -195,8 +195,7 @@ const remoteDeploy = () => {
     `mkdir -p ~/deploy`,
     // rm -rf 中的 -r 表示递归删除，-f 表示强制删除（不提示确认）
     `rm -rf ~/deploy/*`,
-    `cd ~/deploy`,
-    `git clone https://github.com/qcjiamin/fditor-server.git`,
+    `git clone https://github.com/qcjiamin/fditor-server.git ~/deploy`,
     `docker-compose up -d --build`,
     // 移除悬空（无标签）镜像 -a 删除未被容器使用的镜像
     `docker image prune -f`,
