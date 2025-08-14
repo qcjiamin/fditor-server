@@ -26,8 +26,6 @@ FROM base as deps
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
-    --mount=type=bind,source=.env,target=.env \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
@@ -39,8 +37,6 @@ FROM deps as build
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
-    --mount=type=bind,source=.env,target=.env \
     --mount=type=cache,target=/root/.npm \
     npm ci
 

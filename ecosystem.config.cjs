@@ -13,7 +13,7 @@ module.exports = {
       name: "fditor-server",
       script: "./dist/server.js",
       interpreter: "node",
-      interpreter_args: "--env-file .env --experimental-specifier-resolution=node",
+      interpreter_args: "--experimental-specifier-resolution=node",
       env_development: {
         NODE_ENV: "development"
       },
