@@ -250,7 +250,7 @@ const main = () => {
           log('未提供远程服务器信息，跳过自动部署', 'warn')
         }
 
-        log(`构建完成！镜像: ${imageTag}`, 'success')
+        log(`构建完成`, 'success')
         process.exit(0)
     } catch (error) {
         log(`构建失败: ${error.message}`, 'error')
