@@ -192,10 +192,10 @@ const remoteDeploy = () => {
   */
   const deployCommands = [
     // 创建工程目录，-p 如果有不会报错
-    `mkdir -p /opt/fditor-server`,
+    `mkdir -p ~/deploy/fditor-server`,
     // rm -rf 中的 -r 表示递归删除，-f 表示强制删除（不提示确认）
-    `rm -rf /opt/fditor-server/*`,
-    `cd /opt/fditor-server`,
+    `rm -rf ~/deploy/fditor-server/*`,
+    `cd ~/deploy/fditor-server`,
     `git clone https://github.com/qcjiamin/fditor-server.git`,
     `docker-compose up -d --build`,
     // 移除悬空（无标签）镜像 -a 删除未被容器使用的镜像
