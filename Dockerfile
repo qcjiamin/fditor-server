@@ -41,7 +41,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     npm ci
 
 # Copy the rest of the source files into the image.
-COPY --chown=node:node . .
+COPY . .
 # Run the build script.
 RUN npm run build
 
@@ -64,7 +64,7 @@ COPY .env .
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
 COPY --from=deps /home/node/app/node_modules ./node_modules
-COPY --from=build /home/node/app/dist ./dist
+COPY --chown=node:node --from=build /home/node/app/dist ./dist
 # 添加环境变量
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 
