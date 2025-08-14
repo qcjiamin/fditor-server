@@ -56,9 +56,6 @@ ENV NODE_ENV production
 # 修改整个app目录的所有权
 RUN chown -R node:node /home/node/app
 
-# Run the application as a non-root user.
-# USER node
-
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
 COPY ecosystem.config.cjs .
@@ -73,6 +70,9 @@ ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 
 # Expose the port that the application listens on.
 EXPOSE 3090
+
+# Run the application as a non-root user.
+USER node
 
 # Run the application.
 CMD npm run pm-docker-start
