@@ -27,7 +27,7 @@ FROM base as deps
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
-    --mount=type=bind,source=.env,target=.en \
+    --mount=type=bind,source=.env,target=.env \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
@@ -40,7 +40,7 @@ FROM deps as build
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
-    --mount=type=bind,source=.env,target=.en \
+    --mount=type=bind,source=.env,target=.env \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
