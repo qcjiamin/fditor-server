@@ -13,7 +13,7 @@ ARG NODE_VERSION=20.15.1
 FROM node:${NODE_VERSION}-alpine as base
 
 # Set working directory for all build stages.
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 
 
 ################################################################################
@@ -53,9 +53,6 @@ FROM base as final
 # Use production node environment by default.
 ENV NODE_ENV production
 
-# Run the application as a non-root user.
-USER node
-
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
 COPY ecosystem.config.cjs .
@@ -63,13 +60,15 @@ COPY .env .
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=deps /home/node/app/node_modules ./node_modules
+COPY --from=build /home/node/app/dist ./dist
 # 添加环境变量
-ENV PATH="/usr/src/app/node_modules/.bin:${PATH}"
+ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 
 # Expose the port that the application listens on.
 EXPOSE 3090
 
+# Run the application as a non-root user.
+USER node
 # Run the application.
 CMD npm run pm-docker-start
