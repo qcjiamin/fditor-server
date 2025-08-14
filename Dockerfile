@@ -73,4 +73,4 @@ COPY --from=build /usr/src/app/dist ./dist
 EXPOSE 3090
 
 # Run the application.
-CMD npm run pmstart
+CMD npm run pm-docker-start
