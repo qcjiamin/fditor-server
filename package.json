@@ -27,6 +27,7 @@
     "bullmq": "^5.56.9",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "errorhandler": "^1.5.1",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
@@ -51,7 +52,6 @@
     "@types/node": "^24.0.14",
     "@types/split2": "^4.2.3",
     "cross-env": "^7.0.3",
-    "dotenv": "^17.2.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
