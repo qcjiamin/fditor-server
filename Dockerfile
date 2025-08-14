@@ -66,7 +66,8 @@ COPY ecosystem.config.cjs .
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
-
+# 添加环境变量
+ENV PATH="/usr/src/app/node_modules/.bin:${PATH}"
 
 # Expose the port that the application listens on.
 EXPOSE 3090
