@@ -21,9 +21,9 @@ services:
   fditor-nginx:
     # 使用官方Nginx镜像
     image: nginx:alpine
-    # 映射80端口到宿主机，可根据需要修改为443并配置SSL
+    # 映射80端口到宿主机88端口，可根据需要修改为443并配置SSL
     ports:
-      - 80:80
+      - 88:4090
       # - 443:443  # 如需HTTPS可开启此端口
     # 挂载Nginx配置文件
     volumes:
