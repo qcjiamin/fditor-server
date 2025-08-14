@@ -26,6 +26,7 @@ FROM base as deps
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
@@ -37,6 +38,7 @@ FROM deps as build
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=bind,source=ecosystem.config.cjs,target=ecosystem.config.cjs \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
@@ -58,10 +60,12 @@ USER node
 
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
+COPY ecosystem.config.cjs .
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/dist ./dist
 
 
