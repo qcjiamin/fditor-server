@@ -31,7 +31,9 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:3090/health/check"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      # 启动后检测加延迟
+      start_period: 20s
   fditor-nginx:
     # 使用官方Nginx镜像
     image: nginx:alpine
