@@ -20,7 +20,7 @@ services:
     ports:
       - 3090:3090
     volumes:
-      - /var/log/fiditor-server/:/home/node/app/logs/
+      - /var/log/fditor-server/:/home/node/app/logs/
     # 为服务指定网络别名，方便Nginx引用
     networks:
       - fditor-network

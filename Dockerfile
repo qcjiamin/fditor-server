@@ -54,23 +54,28 @@ FROM base as final
 ENV NODE_ENV production
 
 # 修改整个app目录的所有权
-RUN chown -R node:node /home/node/app
+RUN chown -R 1000:1000 /home/node/app
 
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
 COPY ecosystem.config.cjs .
 COPY .env .
+# 为entrypoint做准备
+# COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+# RUN chmod +x /usr/local/bin/entrypoint.sh
+# RUN apk add --no-cache su-exec
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
 COPY --from=deps /home/node/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /home/node/app/dist ./dist
+COPY --from=build /home/node/app/dist ./dist
 # 添加环境变量
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 
 # Expose the port that the application listens on.
 EXPOSE 3090
 
+# ENTRYPOINT ["entrypoint.sh"]
 # Run the application as a non-root user.
 USER node
 
