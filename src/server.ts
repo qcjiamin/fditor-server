@@ -3,7 +3,7 @@ import errorHandler from 'errorhandler'
 import { configDotenv } from 'dotenv'
 configDotenv()
 
-const PORT = process.env.PORT || 3060
+const PORT = process.env.PORT || 3090
 
 // 返回请求错误信息
 if (process.env.NODE_ENV === 'development') {
