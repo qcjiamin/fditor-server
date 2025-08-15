@@ -24,6 +24,14 @@ services:
     # 为服务指定网络别名，方便Nginx引用
     networks:
       - fditor-network
+    # 重启策略
+    restart: unless-stopped
+    # 健康检查，用于确保服务 ready
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3090/health/check"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   fditor-nginx:
     # 使用官方Nginx镜像
     image: nginx:alpine
@@ -40,7 +48,9 @@ services:
       # - ./nginx/ssl:/etc/nginx/ssl
     # 依赖后端服务，确保后端先启动
     depends_on:
-      - fditor-server
+      # 不仅保证顺序，还必须检测依赖的服务状态是否正常[重启也会]
+      fditor-server:
+        condition: service_healthy
     networks:
       - fditor-network
       
