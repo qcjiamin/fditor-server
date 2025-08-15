@@ -61,9 +61,9 @@ COPY package.json .
 COPY ecosystem.config.cjs .
 COPY .env .
 # 为entrypoint做准备
-# COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-# RUN chmod +x /usr/local/bin/entrypoint.sh
-# RUN apk add --no-cache su-exec
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN apk add --no-cache su-exec
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
@@ -75,9 +75,9 @@ ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 # Expose the port that the application listens on.
 EXPOSE 3090
 
-# ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
 # Run the application as a non-root user.
-USER node
+# USER node
 
 # Run the application.
 CMD npm run pm-docker-start
