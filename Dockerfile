@@ -64,6 +64,8 @@ COPY .env .
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN apk add --no-cache su-exec
+# 健康检查需要
+RUN apk add --no-cache curl
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
