@@ -41,7 +41,7 @@ app.use(cookieParser())
 // 日志
 // log only 4xx and 5xx responses to console
 // 创建文件写入流
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+const accessLogStream = fs.createWriteStream(path.join(path.resolve(__dirname, '..'), 'logs', 'access.log'), { flags: 'a' })
 // 创建原始日志接收器
 const tee = new PassThrough()
 // 将解析后的日志行同时输出到文件和控制台

@@ -19,6 +19,8 @@ services:
       NODE_ENV: production
     ports:
       - 3090:3090
+    volumes:
+      - /var/log/fiditor-server/:/home/node/app/logs/
     # 为服务指定网络别名，方便Nginx引用
     networks:
       - fditor-network
@@ -32,6 +34,8 @@ services:
     # 挂载Nginx配置文件
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      # 挂载日志卷
+      - /var/log/nginx/:/var/log/nginx/
       # 如需HTTPS，挂载SSL证书
       # - ./nginx/ssl:/etc/nginx/ssl
     # 依赖后端服务，确保后端先启动
