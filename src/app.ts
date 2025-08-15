@@ -7,6 +7,7 @@ import userController from './controllers/user.js'
 import projectController from './controllers/project.js'
 import uploadController from './controllers/upload.js'
 import lockController from './controllers/lock.js'
+import healthController from './controllers/health.js'
 import morgan from "morgan"
 import fs from 'fs'
 import path  from "path"
@@ -59,6 +60,7 @@ app.use('/user', userController)
 app.use('/project', projectController)
 app.use('/upload', uploadController)
 app.use('/lock', lockController)
+app.use('/health', healthController)
 app.use(otherErrors)
 
 export default app

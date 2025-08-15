@@ -46,6 +46,7 @@ services:
       - /var/log/nginx/:/var/log/nginx/
       # 如需HTTPS，挂载SSL证书
       # - ./nginx/ssl:/etc/nginx/ssl
+    restart: unless-stopped
     # 依赖后端服务，确保后端先启动
     depends_on:
       # 不仅保证顺序，还必须检测依赖的服务状态是否正常[重启也会]
