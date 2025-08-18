@@ -7,6 +7,7 @@
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
 ARG NODE_VERSION=20.15.1
+ARG NODE_ENV=development
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -49,6 +50,8 @@ RUN npm run build
 # Create a new stage to run the application with minimal runtime dependencies
 # where the necessary files are copied from the build stage.
 FROM base as final
+# 重新声明 ARG，继承全局的值
+ARG NODE_ENV
 
 # Use production node environment by default.
 ENV NODE_ENV production
@@ -60,6 +63,7 @@ RUN chown -R 1000:1000 /home/node/app
 COPY package.json .
 COPY ecosystem.config.cjs .
 COPY .env .
+COPY .env.${NODE_ENV} .
 # 为entrypoint做准备
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

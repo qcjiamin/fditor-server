@@ -196,7 +196,7 @@ const remoteDeploy = () => {
     // rm -rf 中的 -r 表示递归删除，-f 表示强制删除（不提示确认）
     `rm -rf ~/deploy/fditor-server`,
     `git clone https://github.com/qcjiamin/fditor-server.git ~/deploy/fditor-server`,
-    `cd ~/deploy/fditor-server && NODE_ENV=${process.env.NODE_ENV} docker compose --env-file .env.${process.env.NODE_ENV} up -d --build`,
+    `cd ~/deploy/fditor-server && docker compose --env-file .env.${process.env.NODE_ENV} up -d --build`,
     // 移除悬空（无标签）镜像 -a 删除未被容器使用的镜像
     `docker image prune -f`,
   ]
