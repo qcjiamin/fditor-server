@@ -12,10 +12,11 @@
     "pmrestart": "pm2 restart ecosystem.config.cjs",
     "pmlogs": "pm2 logs",
     "pmclear": "pm2 stop ecosystem.config.cjs && pm2 delete all",
-    "deploy:development": "cross-env NODE_ENV=development node build.js",
-    "deploy:staging": "cross-env NODE_ENV=staging node build.js",
-    "deploy:production": "cross-env NODE_ENV=production node build.js",
-    "pm-docker-start": "pm2-runtime ecosystem.config.cjs"
+    "deploy-development": "cross-env NODE_ENV=development node build.js",
+    "deploy-staging": "cross-env NODE_ENV=staging node build.js",
+    "deploy-production": "cross-env NODE_ENV=production node build.js",
+    "pm-docker-start": "pm2-runtime ecosystem.config.cjs",
+    "pm-docker-stop": "pm2-runtime ecosystem.config.cjs"
   },
   "keywords": [],
   "author": "",
