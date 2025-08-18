@@ -227,7 +227,7 @@ const main = () => {
         //! 本地build一次，避免到服务器后build报错
         // 4. 根目录安装所有依赖（包括workspaces）强制使用现有 lockfile 而不更新它
         log('安装根目录依赖（包括workspaces）')
-        runCommand('npm ci')
+        runCommand('npm install')
 
         // 5. 构建
         log('开始构建')
