@@ -225,19 +225,20 @@ const main = () => {
         const newVersion = incrementVersion()
 
         //! 本地build一次，避免到服务器后build报错
+        //! 由于设置了NODE_ENV 为 production, 因此不会安装dev依赖,build会失败，这里先关闭4 5 6 步
         // 4. 根目录安装所有依赖（包括workspaces）强制使用现有 lockfile 而不更新它
-        log('安装根目录依赖（包括workspaces）')
-        runCommand('npm ci')
+        // log('安装根目录依赖（包括workspaces）')
+        // runCommand('npm ci')
 
         // 5. 构建
-        log('开始构建')
-        runCommand('npm run build')
+        // log('开始构建')
+        // runCommand('npm run build')
 
         // 6. 检查构建产物
-        if (!fs.existsSync(distPath) || fs.readdirSync(distPath).length === 0) {
-          log('构建产物为空', 'error')
-          process.exit(1)
-        }
+        // if (!fs.existsSync(distPath) || fs.readdirSync(distPath).length === 0) {
+        //   log('构建产物为空', 'error')
+        //   process.exit(1)
+        // }
 
         // 7. 提交git，并打tag
         gitCommitAndTag(newVersion)
