@@ -14,6 +14,13 @@ module.exports = {
       script: "./dist/server.js",
       interpreter: "node",
       interpreter_args: "--experimental-specifier-resolution=node",
+      // env: {
+      //   NODE_ENV: "production",
+      //   PORT: 3000
+      // },
+      env_production: {
+        NODE_ENV: "production"
+      },
       env_development: {
         NODE_ENV: "development"
       },

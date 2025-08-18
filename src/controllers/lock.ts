@@ -5,14 +5,9 @@ import { ApiResponse } from "../types/normal.js";
 import fs from 'fs/promises'
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { getValue, setValue } from "../utils/redisLock.js";
+// import { getValue, setValue } from "../utils/redisLock.js";
 import { Job, Queue, QueueEvents } from "bullmq";
 import {Redis} from 'ioredis'
-import { configDotenv } from 'dotenv'
-configDotenv()
-
-const LOCK_WRITE_KEY = 'write:lock'
-
 const router = Router()
 
 function sleep(time: number):Promise<void>{
@@ -29,18 +24,18 @@ const __dirname = dirname(__filename);
 const filePath = path.join(__dirname, 'example.txt');
 
 
-router.post('/set', async (req:Request, res: Response)=>{
-  const {key, value} = req.body
-  await setValue(key, value)
-  res.status(200).send()
-})
-router.get('/get/:key', async (req:Request, res: Response)=>{
-  const {key} = req.params
-  const value = await getValue(key)
-  res.status(200).send({
-    value
-  })
-})
+// router.post('/set', async (req:Request, res: Response)=>{
+//   const {key, value} = req.body
+//   await setValue(key, value)
+//   res.status(200).send()
+// })
+// router.get('/get/:key', async (req:Request, res: Response)=>{
+//   const {key} = req.params
+//   const value = await getValue(key)
+//   res.status(200).send({
+//     value
+//   })
+// })
 
 const redis = new Redis({
   host: process.env.REDIS_HOST || 'localhost',

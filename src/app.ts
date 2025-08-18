@@ -27,7 +27,10 @@ const app = express()
 app.set('trust proxy', true);
 // 配置跨域信息
 app.use(cors({
-        origin: 'http://localhost', // 前端域名
+        origin: [
+            'http://localhost:5173',
+            'http://172.23.84.189:80'
+        ], // 前端域名
         credentials: true,  // 携带证书、cookie
         methods: 'GET, POST, PUT, DELETE, OPTIONS',
         allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization'

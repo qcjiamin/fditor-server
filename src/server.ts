@@ -1,8 +1,9 @@
+import './utils/envload.js'
+// loadEnv()
 import app from './app.js'
 import errorHandler from 'errorhandler'
-import { configDotenv } from 'dotenv'
-configDotenv()
 
+console.log(process.env.PORT)
 const PORT = process.env.PORT || 3090
 
 // 返回请求错误信息

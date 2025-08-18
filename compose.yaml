@@ -15,10 +15,11 @@ services:
       context: .
     # env_file:
     #   - .env
-    environment:
-      NODE_ENV: production
+    # environment:
+    #   NODE_ENV: production
     ports:
-      - 3090:3090
+      # - 3090:3090
+      - "3090:${PORT}"
     volumes:
       - /var/log/fditor-server/:/home/node/app/logs/
     # 为服务指定网络别名，方便Nginx引用
@@ -28,7 +29,7 @@ services:
     restart: unless-stopped
     # 健康检查，用于确保服务 ready
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3090/health/check"]
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health/check"]
       interval: 10s
       timeout: 5s
       retries: 5
